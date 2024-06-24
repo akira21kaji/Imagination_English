@@ -2,6 +2,7 @@
 
 import firebaseServices from '@/src/lib/firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { Span } from 'next/dist/trace';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react'
@@ -65,6 +66,7 @@ const Login: React.FC = () => {
                 type="text" 
                 placeholder='Email' 
                 className='bg-transparent border-b border-white p-1 mt-1 mb-2 text-white w-full'/>
+                {errors.email && <span className='text-red-600 text-sm'>{errors.email.message}</span>}
             </div>
             <div>
               <input 
@@ -78,6 +80,7 @@ const Login: React.FC = () => {
                 type="password" 
                 placeholder='Password' 
                 className='bg-transparent border-b border-white p-1 mb-2 text-white w-full'/>
+                {errors.password && <span className='text-red-600 text-sm'>{errors.password.message}</span>}
             </div>
             <button 
               className='bg-neutral-600 py-1 px-4 mt-2 rounded text-white justify-center mb-2 text-sm hover:bg-neutral-500'
