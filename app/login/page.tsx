@@ -1,29 +1,26 @@
 'use client'
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import yup from 'yup';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { schema } from '@/src/lib/auth/validation';
 import firebaseServices from '@/src/lib/firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Span } from 'next/dist/trace';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form';
 
-type LoginProps = {
-  email: string;
-  password: string;
-}
+type AuthProps = yup.InferType<typeof schema>;
 
 const Login: React.FC = () => {
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    formState: {errors}
-  } = useForm<LoginProps>();
+  const { register, handleSubmit, formState: {errors} } = useForm<AuthProps>({
+    resolver: yupResolver(schema),
+    mode: 'onBlur',
+  });
 
-  const onSubmit: SubmitHandler<LoginProps> = async (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<AuthProps> = async (data) => {
     await signInWithEmailAndPassword(firebaseServices.auth, data.email, data.password)
     .then((userCredential) => {
         const user = userCredential.user;
@@ -55,32 +52,19 @@ const Login: React.FC = () => {
             <h1 className='text-2xl font-bold text-center text-white'>Login</h1>
             <div>
               <input 
-                {...register('email',{
-                  required: 'メールアドレスは必須です。',
-                  pattern: {
-                    value: 
-                      /^[a-zA-Z0-9_+-]+(\.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/,
-                    message: '不適切なメールアドレスです。',
-                  }
-                })}
+                {...register('email')}
                 type="text" 
                 placeholder='Email' 
                 className='bg-transparent border-b border-white p-1 mt-1 mb-2 text-white w-full'/>
-                {errors.email && <span className='text-red-600 text-sm'>{errors.email.message}</span>}
+                <span className='text-red-600 text-sm'>{errors.email?.message}</span>
             </div>
             <div>
               <input 
-                {...register('password',{
-                  required: 'パスワードは必須です。',
-                  minLength: {
-                    value: 8,
-                    message: 'パスワードは6文字以上です。',
-                  }
-                })}
+                {...register('password')}
                 type="password" 
                 placeholder='Password' 
                 className='bg-transparent border-b border-white p-1 mb-2 text-white w-full'/>
-                {errors.password && <span className='text-red-600 text-sm'>{errors.password.message}</span>}
+                <span className='text-red-600 text-sm'>{errors.password?.message}</span>
             </div>
             <button 
               className='bg-neutral-600 py-1 px-4 mt-2 rounded text-white justify-center mb-2 text-sm hover:bg-neutral-500'
