@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { WordsProvider } from "@/src/lib/words/wordsContext";
 
 export const metadata: Metadata = {
   title: "English Imagination Learning",
@@ -13,7 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <WordsProvider>
+        {children}
+        </WordsProvider>  
+      </body>
     </html>
   );
 }
