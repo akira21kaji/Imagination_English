@@ -4,4 +4,8 @@
 
 body {
     background-color: #000000;
+    font-family: 'Arial', sans-serif;
+}
+::placeholder {
+    font-size: 12px;
 }
