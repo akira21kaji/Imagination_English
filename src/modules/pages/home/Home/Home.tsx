@@ -1,13 +1,13 @@
 import React from 'react'
-import Topbar from '../components/Topbar';
-import EnglishEntry from '../components/EnglishEntry';
-import Lists from '../components/Lists';
+import EnglishEntry from './EnglishEntry/EnglishEntry';
+import TopBar from './TopBar/TopBar';
+import Lists from './Lists/Lists';
 
-const TopPage = () => {
+const Home = () => {
   return (
     <div>
       <div>
-        <Topbar />
+        <TopBar />
       </div>
       <div className='flex flex-col justify-center items-center'>
         <EnglishEntry />
@@ -19,4 +19,4 @@ const TopPage = () => {
   )
 }
 
-export default TopPage;
+export default Home;
