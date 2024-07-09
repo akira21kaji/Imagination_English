@@ -6,12 +6,15 @@ const EnglishEntry = () => {
   const {inputWord, setInputWord, generateExplanation, setGenerateExplanation} = useWordsContext() || {};
   
   const handleGenerate = async () => {
+    // console.log('check handler')
     const response = await fetch('/api/gpt',{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({inputWord})
+      body: JSON.stringify({
+        inputWord: inputWord,
+      }),
     });
     
     if (!response.ok) {
@@ -19,13 +22,21 @@ const EnglishEntry = () => {
     }
 
     const responseData = await response.json();
-    console.log('gpt response' , responseData.explanation);
-    if(setGenerateExplanation) setGenerateExplanation(responseData);
+    console.log(responseData);
+    console.log('gpt response' , responseData.body);
+    if(responseData.status === 200){
+      if(setGenerateExplanation) setGenerateExplanation(responseData.body);
+      if(setInputWord) setInputWord('');
+    }
   }
   
   return (
     <>
-      <form className='flex flex-col bg-neutral-800 p-4 rounded-lg items-center w-3/5' id='english-form'>
+      <form 
+        className='flex flex-col bg-neutral-800 p-4 rounded-lg items-center w-3/5' 
+        id='english-form'
+        onSubmit={handleGenerate}
+        >
         <h1 className='text-white text-center text-2xl font-bold m-4'>Enter the English words</h1>
         <input 
           type="text" 
@@ -43,6 +54,7 @@ const EnglishEntry = () => {
           <button 
             className='bg-neutral-600 p-1 rounded-md mt-2 text-white' 
             type='submit'
+            onClick={handleGenerate}
             >
             Generate
           </button>
