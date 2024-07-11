@@ -5,7 +5,8 @@ import { useWordsContext } from '@/src/lib/words/wordsContext';
 const EnglishEntry = () => {
   const {inputWord, setInputWord, generateExplanation, setGenerateExplanation} = useWordsContext() || {};
   
-  const handleGenerate = async () => {
+  const handleGenerate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     // console.log('check handler')
     const response = await fetch('/api/gpt',{
       method: 'POST',
@@ -13,7 +14,7 @@ const EnglishEntry = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        inputWord: inputWord,
+        inputWord,
       }),
     });
     
@@ -25,8 +26,12 @@ const EnglishEntry = () => {
     console.log(responseData);
     console.log('gpt response' , responseData.body);
     if(responseData.status === 200){
-      if(setGenerateExplanation) setGenerateExplanation(responseData.body);
-      if(setInputWord) setInputWord('');
+      if(setGenerateExplanation) {
+        setGenerateExplanation(responseData.body);
+      }
+      if(setInputWord) {
+        setInputWord('');
+      }
     }
   }
   
@@ -44,28 +49,22 @@ const EnglishEntry = () => {
           className='bg-transparent border-b border-neutral-600 p-1 mt-2 mb-2 text-white w-3/5'
           onChange={(e) => setInputWord?.(e.target.value)}
           value={inputWord}
-          onKeyDown={(e) => {
-            if(e.key === 'Enter'){
-              e.preventDefault();
-              handleGenerate();
-            }
-          }}
           />
           <button 
             className='bg-neutral-600 p-1 rounded-md mt-2 text-white' 
             type='submit'
-            onClick={handleGenerate}
             >
             Generate
           </button>
       </form>
       <div className='bg-neutral-600 p-4 rounded-lg m-4 w-3/5'>
         <p className='text-white text-center'>
-          {generateExplanation ? generateExplanation : 'not here'}
+          {generateExplanation ? generateExplanation : '英単語を入力してください'}
         </p>
       </div>
     </>
-  )
+
+)
 }
 
 export default EnglishEntry

@@ -1,4 +1,4 @@
-import Home from "@/src/modules/pages/home/Home/Home"
+import Home from "@/src/modules/Home/pages/Home/Home"
 
 const page = () => {
   return (

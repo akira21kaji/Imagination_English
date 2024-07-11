@@ -44,22 +44,26 @@ example:
 json形式は無視して、近しい英単語を返答してください。
 `;
 
+//OpenAIクライアントを作成
 const openAi = new OpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
 });
 
+//
 export async function POST(req: NextRequest, res: NextResponse){
-
-  const body = await req.json();
-  console.log(body);
-
   try {
+    //リクエストのボディを取得
+    const body = await req.json(); //Typeキャスト
+    console.log(body);
+
+    //GPT-3.5モデルでレスポンスを生成
     const gptResponse = await openAi.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{role: 'user', content: body.inputWord + prompt}],
     });
 
+    //GPT-3.5モデルでレスポンスを取得
     console.log(gptResponse);
     console.log(gptResponse.choices[0].message); 
 

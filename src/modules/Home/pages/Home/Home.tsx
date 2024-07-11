@@ -1,4 +1,3 @@
-import React from 'react'
 import EnglishEntry from './EnglishEntry/EnglishEntry';
 import TopBar from './TopBar/TopBar';
 import Lists from './Lists/Lists';

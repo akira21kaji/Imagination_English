@@ -1,4 +1,4 @@
-import SignUp from '@/src/modules/pages/auth/SignUp/SignUp'
+import SignUp from '@/src/modules/auth/pages/SignUp/SignUp'
 
 const page = () => {
   return (

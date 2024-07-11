@@ -1,4 +1,4 @@
-import Login from "@/src/modules/pages/auth/Login/Login"
+import Login from "@/src/modules/auth/pages/Login/Login"
 
 const page = () => {
   return (
