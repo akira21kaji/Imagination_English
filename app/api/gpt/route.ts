@@ -44,6 +44,41 @@ example:
 json形式は無視して、近しい英単語を返答してください。
 `;
 
+const englishPrompt = `
+Please answer the above words according to the following. 
+
+If the English word is spelled incorrectly, please ignore all of the following conditions and reply with the English word you think is correct.
+
+## Description of request
+Please answer the entered "English words" according to "# # Order of reply" and "# # Form of reply."
+Please make sure to follow the "# # Constraints."
+If an English word is an error, please follow the "# # Response in case of error" and ignore the "# # Constraints."
+
+## Order of reply
+1. Enter the English word as it is (entryWords)
+2. Explain the English word in English (explanation)
+3. Translate the English explanation into Japanese (Japanese translation for explanation)
+4. Example of English word (example)
+
+Please reply in the order shown above and reply in json format as follows.
+
+## Response Format
+entryWords:
+explanation:
+inJapanese:
+example:
+
+## Constraints
+- If an English word is misspelled, please indicate it in Japanese and reply without following the "Reply Content"
+- When explaining an English word in English, please reply in the form "This word is" without using the typed English word
+- Reply sentences should be concise and simple, and should fit in one sentence
+- If an English word is misspelled, please reply with the following conditions
+
+## Reply in case of error
+If an English word is misspelled or typed with two letters, etc.,
+please reply with the closest English word, ignoring the json format.
+`;
+
 //OpenAIクライアントを作成
 const openAi = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -60,7 +95,7 @@ export async function POST(req: NextRequest, res: NextResponse){
     //GPT-3.5モデルでレスポンスを生成
     const gptResponse = await openAi.chat.completions.create({
       model: 'gpt-3.5-turbo',
-      messages: [{role: 'user', content: body.inputWord + prompt}],
+      messages: [{role: 'user', content: body.inputWord + englishPrompt}],
     });
 
     //GPT-3.5モデルでレスポンスを取得
