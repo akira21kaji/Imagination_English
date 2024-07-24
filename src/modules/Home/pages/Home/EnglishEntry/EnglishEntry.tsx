@@ -1,6 +1,7 @@
 'use client'
 
 import { useWordsContext } from '@/src/lib/words/wordsContext';
+import { useEffect } from 'react';
 
 const EnglishEntry = () => {
   const {inputWord, setInputWord, generateExplanation, setGenerateExplanation} = useWordsContext() || {};
@@ -23,8 +24,8 @@ const EnglishEntry = () => {
     }
 
     const responseData = await response.json();
-    console.log(responseData);
-    console.log('gpt response' , responseData.body);
+    // console.log(responseData);
+    // console.log('gpt response' , responseData.body);
     if(responseData.status === 200){
       if(setGenerateExplanation) {
         setGenerateExplanation(responseData.body);
@@ -34,6 +35,37 @@ const EnglishEntry = () => {
       }
     }
   }
+  
+  useEffect(() => {
+    const sendFirebase = async () => {
+      console.log('generateExplanation', generateExplanation);
+
+      if(!generateExplanation) {
+        console.log('generateExplanation is not defined');
+        return;
+      }
+      
+      const firebaseResponse = await fetch('api/firebase',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          generateExplanation,
+        }),
+      });
+
+      if(!firebaseResponse.ok) { 
+        throw new Error('Network response was not ok');
+      }
+
+      const firebaseResponseData = await firebaseResponse.json();
+      console.log(firebaseResponseData);
+    }
+    if(generateExplanation) {
+      sendFirebase();
+    }
+  },[generateExplanation])
   
   return (
     <>

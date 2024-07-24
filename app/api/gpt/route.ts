@@ -60,7 +60,7 @@ If an English word is an error, please follow the "# # Response in case of error
 3. Translate the English explanation into Japanese (Japanese translation for explanation)
 4. Example of English word (example)
 
-Please reply in the order shown above and reply in json format as follows.
+Please reply in the order shown above and reply only in json format as follows.
 
 ## Response Format
 entryWords:
@@ -103,7 +103,7 @@ export async function POST(req: NextRequest, res: NextResponse){
     console.log(gptResponse.choices[0].message); 
 
     const explanation = gptResponse?.choices?.[0]?.message?.content ?? '';
-    console.log(explanation);
+    // console.log(explanation);
     return NextResponse.json({
       status: 200,
       body: explanation,
