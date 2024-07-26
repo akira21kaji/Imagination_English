@@ -18,14 +18,15 @@ const EnglishEntry = () => {
         inputWord,
       }),
     });
-    
+    console.log('gpt response' , response);
+
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
 
     const responseData = await response.json();
-    // console.log(responseData);
-    // console.log('gpt response' , responseData.body);
+    console.log(responseData);
+    console.log('gpt response' , responseData.body);
     if(responseData.status === 200){
       if(setGenerateExplanation) {
         setGenerateExplanation(responseData.body);
@@ -37,6 +38,7 @@ const EnglishEntry = () => {
   }
   
   useEffect(() => {
+    console.log('generateExplanation', generateExplanation);
     const sendFirebase = async () => {
       console.log('generateExplanation', generateExplanation);
 
@@ -91,7 +93,11 @@ const EnglishEntry = () => {
       </form>
       <div className='bg-neutral-600 p-4 rounded-lg m-4 w-3/5'>
         <p className='text-white text-center'>
-          {generateExplanation ? generateExplanation : '英単語を入力してください'}
+          {generateExplanation 
+            ? typeof generateExplanation === 'string' 
+            ? generateExplanation 
+            : JSON.stringify(generateExplanation)
+            : '英単語を入力してください'}
         </p>
       </div>
     </>
