@@ -11,7 +11,7 @@ const Home = () => {
       <div className='flex flex-col justify-center items-center'>
         <EnglishEntry />
       </div>
-      <div>
+      <div className='grid grid-cols-1 gap-4'>
         <Lists />
       </div>
     </div>

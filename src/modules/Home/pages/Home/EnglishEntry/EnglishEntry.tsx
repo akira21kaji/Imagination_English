@@ -85,7 +85,7 @@ const EnglishEntry = () => {
           value={inputWord}
           />
           <button 
-            className='bg-neutral-600 p-1 rounded-md mt-2 text-white' 
+            className='bg-neutral-600 w-1/5 p-1 rounded-md mt-2 text-white hover:bg-neutral-700' 
             type='submit'
             >
             Generate
