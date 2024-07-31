@@ -21,7 +21,6 @@ const Login: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<AuthProps> = async (data) => {
-    console.log(data)
     await signInWithEmailAndPassword(firebaseServices.auth, data.email, data.password)
     .then((userCredential) => {
         const user = userCredential.user;

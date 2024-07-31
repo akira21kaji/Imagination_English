@@ -8,7 +8,7 @@ const EnglishEntry = () => {
   
   const handleGenerate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log('check handler')
+
     const response = await fetch('/api/gpt',{
       method: 'POST',
       headers: {
@@ -18,15 +18,13 @@ const EnglishEntry = () => {
         inputWord,
       }),
     });
-    console.log('gpt response' , response);
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
 
     const responseData = await response.json();
-    console.log(responseData);
-    console.log('gpt response' , responseData.body);
+
     if(responseData.status === 200){
       if(setGenerateExplanation) {
         setGenerateExplanation(responseData.body);
@@ -38,9 +36,7 @@ const EnglishEntry = () => {
   }
   
   useEffect(() => {
-    console.log('generateExplanation', generateExplanation);
     const sendFirebase = async () => {
-      console.log('generateExplanation', generateExplanation);
 
       if(!generateExplanation) {
         console.log('generateExplanation is not defined');
@@ -60,9 +56,7 @@ const EnglishEntry = () => {
       if(!firebaseResponse.ok) { 
         throw new Error('Network response was not ok');
       }
-
-      const firebaseResponseData = await firebaseResponse.json();
-      console.log(firebaseResponseData);
+      
     }
     if(generateExplanation) {
       sendFirebase();
@@ -85,7 +79,7 @@ const EnglishEntry = () => {
           value={inputWord}
           />
           <button 
-            className='bg-neutral-600 p-1 rounded-md mt-2 text-white' 
+            className='bg-neutral-600 w-1/5 p-1 rounded-md mt-2 text-white hover:bg-neutral-700' 
             type='submit'
             >
             Generate
