@@ -11,20 +11,13 @@ const Lists = () => {
       method: 'GET'
     })
     const data = await res.json();
-    console.log('data', data);
 
     if(data.status === 200) {
       if(setWordLists) {
         setWordLists(data.wordLists);
       }
-    }
-          
+    }      
   }
-
-  useEffect(() => {
-    console.log('wordLists', wordLists);
-  },[wordLists])
-
 
   return (
     <>
