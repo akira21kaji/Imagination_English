@@ -10,8 +10,9 @@ export async function POST(req: NextRequest) {
 
     // body情報をJSON形式で取得
     const explanation = JSON.parse(body.generateExplanation);
+    
     // データを保存するためのオブジェクトを作成
-    const newWord = {explanation, createdAt: serverTimestamp()};
+    const newWord = { ...explanation, createdAt: serverTimestamp()};
 
     // Firebaseのwordsコレクションにデータを保存
     const newWordRef = collection(db, 'words');

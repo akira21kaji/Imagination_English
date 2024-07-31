@@ -60,11 +60,26 @@ export async function POST(req: NextRequest){
 
     // GPT-3.5モデルのレスポンスを取得
     const explanation = gptResponse?.choices?.[0]?.message?.content ?? '';
+    console.log('explanation', typeof explanation);
+    
+    // explanationをJSON形式に変換
+    const explanationJson = JSON.parse(explanation);
+    console.log('explanationJson', explanationJson);
+
+    // 画像生成
+    const imageResponse = { imageUrl: '' };
+
+    // 画像生成のResponseをexplanationJsonに
+
+    const response = {
+      ...explanationJson,
+      ...imageResponse,
+    };
 
     // GPT-3.5モデルのレスポンスを返答
     return NextResponse.json({
       status: 200,
-      body: explanation,
+      body: response,
     });
   } catch (error) {
     console.error("Error generating explanation:", error);
