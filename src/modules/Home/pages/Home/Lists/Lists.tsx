@@ -1,5 +1,6 @@
 'use client'
 
+import Image from "next/image";
 import { useEffect, useState } from "react"
 
 
@@ -25,10 +26,11 @@ const Lists = () => {
       <div className="grid grid-cols-4 gap-2">
         {wordLists.map((item: any, index: number) => (
           <div key={index} className="bg-gray-100 p-2 rounded-md">
-            <p className="text-center text-gray-800 text-3xl font-bold">{item.explanation.inputWord}</p>
-            <p className="text-gray-800 text-md">{item.explanation.explanation}</p>
-            <p className="text-gray-800 text-md">{item.explanation.inJapanese}</p>
-            <p className="text-gray-800 text-md">{item.explanation.example}</p>
+            <p className="text-center text-gray-800 text-3xl font-bold">{item.inputWord}</p>
+            <p className="text-gray-800 text-md">{item.explanation}</p>
+            <p className="text-gray-800 text-md">{item.inJapanese}</p>
+            <p className="text-gray-800 text-md">{item.example}</p>
+            {item.imageUrl && <Image src={item.imageUrl} alt="画像" width={200} height={200} />}
           </div>
         ))}
       </div>

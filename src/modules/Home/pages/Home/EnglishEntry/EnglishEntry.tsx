@@ -24,10 +24,11 @@ const EnglishEntry = () => {
     }
 
     const responseData = await response.json();
+    const responseDataString = JSON.stringify(responseData.body);
 
     if(responseData.status === 200){
       if(setGenerateExplanation) {
-        setGenerateExplanation(responseData.body);
+        setGenerateExplanation(responseDataString);
       }
       if(setInputWord) {
         setInputWord('');
