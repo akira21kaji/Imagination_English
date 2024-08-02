@@ -1,10 +1,12 @@
 'use client'
 
 import { useWordsContext } from '@/src/lib/words/wordsContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import GenerateResultModal from '../../../components/GenerateResultModal';
 
 const EnglishEntry = () => {
   const {inputWord, setInputWord, generateExplanation, setGenerateExplanation} = useWordsContext() || {};
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const handleGenerate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,32 +37,10 @@ const EnglishEntry = () => {
       }
     }
   }
-  
+
   useEffect(() => {
-    const sendFirebase = async () => {
-
-      if(!generateExplanation) {
-        console.log('generateExplanation is not defined');
-        return;
-      }
-      
-      const firebaseResponse = await fetch('api/firebase',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          generateExplanation,
-        }),
-      });
-
-      if(!firebaseResponse.ok) { 
-        throw new Error('Network response was not ok');
-      }
-      
-    }
     if(generateExplanation) {
-      sendFirebase();
+      setIsModalOpen(true);
     }
   },[generateExplanation])
   
@@ -86,15 +66,13 @@ const EnglishEntry = () => {
             Generate
           </button>
       </form>
-      <div className='bg-neutral-600 p-4 rounded-lg m-4 w-3/5'>
-        <p className='text-white text-center'>
-          {generateExplanation 
-            ? typeof generateExplanation === 'string' 
-            ? generateExplanation 
-            : JSON.stringify(generateExplanation)
-            : '英単語を入力してください'}
-        </p>
+      {isModalOpen && 
+      <div 
+        className='flex justify-center items-center h-full w-full bg-black bg-opacity-50'
+        >
+        <GenerateResultModal setIsModalOpen={setIsModalOpen}/>
       </div>
+      }
     </>
 
 )
