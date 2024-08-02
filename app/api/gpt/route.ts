@@ -27,6 +27,12 @@ const gptPrompt =`
 以下の英単語を役割に従い、英語説明、英語説明の日本語訳、英単語の例文をJSON形式で返答してください。
 入力された英単語：`
 
+const imageGptPrompt = `
+こちらの英語文章を、説明する画像を明確に表示してください。
+あなたは英語をイメージで暗記することを補助する、先生です。
+形式はアニメーション形式で、カラーアニメのようなイメージを作成してください。
+`
+
 //OpenAIクライアントを作成
 const openAi = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -64,16 +70,23 @@ export async function POST(req: NextRequest){
     
     // explanationをJSON形式に変換
     const explanationJson = JSON.parse(explanation);
-    console.log('explanationJson', explanationJson);
 
     // 画像生成
-    const imageResponse = { imageUrl: '' };
+    const imagePrompt = explanationJson.explanation.explanation + imageGptPrompt;
+    const imageResponse = await openAi.images.generate({
+      model: 'dall-e-3',
+      prompt: imagePrompt,
+      n: 1,
+      size: '1024x1024',
+      quality: 'standard',
+  });
+    const imageUrl = imageResponse.data[0].url;
+    const imageResponseData = { imageUrl: imageUrl };
 
     // 画像生成のResponseをexplanationJsonに
-
     const response = {
       ...explanationJson,
-      ...imageResponse,
+      ...imageResponseData,
     };
 
     // GPT-3.5モデルのレスポンスを返答
